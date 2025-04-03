@@ -59,6 +59,21 @@ impl Polynome {
 
         Polynome {coefs: res_coefs}
     }
+
+    fn derivative(self) -> Polynome {
+        if self.coefs.iter().count() == 1 {
+            return Polynome { coefs: vec![0.0]};
+        }
+        let mut derive_coef = Vec::new();
+        for (i, j) in self.coefs.iter().enumerate() {
+            derive_coef.push(i as f32 * j);
+        }
+        Polynome { coefs: derive_coef }
+    }
+
+    fn primitive(self) {
+        todo!()
+    }
 }
 
 impl Mul for Polynome {
