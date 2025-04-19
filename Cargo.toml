@@ -3,3 +3,4 @@ members = [
     "polynomial",
     "matrix"
 ]
+resolver = "2"

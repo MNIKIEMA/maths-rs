@@ -1,25 +1,36 @@
 use std::ops::{Index, IndexMut};
 
 #[derive(Debug, PartialEq)]
-struct Matrix<T> {
-    data: Vec<Vec<T>>
+pub struct Matrix<T> {
+    data: Vec<Vec<T>>,
 }
 
-struct  Axis{
-    axis: usize
+#[derive(Debug)]
+pub struct COOMatrix<T> {
+    data: Vec<Tuple<T>>
 }
 
+#[derive(Debug)]
+pub struct Tuple<T> {
+    row: usize,
+    col: usize,
+    value: T,
+}
+
+
+struct Axis {
+    axis: usize,
+}
 
 impl<T> Matrix<T> {
-    fn new(data: Vec<Vec<T>>) -> Self {
+    pub fn new(data: Vec<Vec<T>>) -> Self {
         Matrix { data }
     }
 
-    fn shape(&self) -> (usize, usize) {
+    pub fn shape(&self) -> (usize, usize) {
         (self.data.len(), self.data.get(0).map_or(0, |row| row.len()))
     }
 }
-
 
 impl<T> Index<usize> for Matrix<T> {
     type Output = Vec<T>;
@@ -29,7 +40,6 @@ impl<T> Index<usize> for Matrix<T> {
     }
 }
 
-
 impl<T> IndexMut<usize> for Matrix<T> {
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
         &mut self.data[index]
@@ -37,9 +47,16 @@ impl<T> IndexMut<usize> for Matrix<T> {
 }
 
 
-fn main() {
-    let matrix = Matrix::new(vec![vec![1, 2, 3], vec![4, 5, 6]]);
-    let shape = matrix.shape();
-    let first_element = matrix[0][0];
-    println!("Matrix {:?} with shape {:?} and first element {}", matrix, shape, first_element)
+impl<T> COOMatrix<T> {
+    pub fn new() -> Self {
+        COOMatrix { data: Vec::new() }
+    }
+
+    pub fn push(&mut self, row: usize, col: usize, value: T) {
+        self.data.push(Tuple { row, col, value });
+    }
+
+    pub fn data(&self) -> &Vec<Tuple<T>> {
+        &self.data
+    }
 }
